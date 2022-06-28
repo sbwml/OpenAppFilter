@@ -21,6 +21,7 @@ s = m:section(TypedSection, "global", translate("Basic Settings"))
 s:option(Flag, "enable", translate("Enable App Filter"),translate(""))
 s.anonymous = true
 
+>>>>>>> 7d4b72fd04bd41c8d74366cd75354610855be9a6
 s=m:section(TypedSection,"time",translate("Time Setting")) s.anonymous = true
 hv = s:option(Value, "start_time", translate("Start Time")) hv.default="00:00"
 hv.optional=false
