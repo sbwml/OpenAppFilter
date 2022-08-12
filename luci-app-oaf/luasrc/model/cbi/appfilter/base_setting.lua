@@ -13,7 +13,7 @@ local SYS = require "luci.sys"
 local m, s
 
 m = Map("appfilter", translate("App Filter"), translate(
-    "目前不支持旁路模式，请先关闭所有加速(acc)、广告过滤、多拨等可能冲突的模块"))
+    "Bypass mode is not currently supported, please turn off all possible conflicting modules such as acceleration (acc), advertisement filtering, multi-dialing, etc."))
 
 s = m:section(TypedSection, "global", translate("Basic Settings"))
 s:option(Flag, "enable", translate("Enable App Filter"), translate(""))

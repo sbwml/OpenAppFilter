@@ -10,21 +10,21 @@ function index()
 	local page
 	entry({"admin", "network", "appfilter"}, 
 	alias("admin", "network", "appfilter", "user_list"),
-		_("应用过滤"), 20).dependent = true
+		_("App Filter"), 20).dependent = true
 
 	entry({"admin", "network", "appfilter", "user_list"}, 
 		arcombine(cbi("appfilter/user_list",{hideapplybtn=true, hidesavebtn=true, hideresetbtn=true}), 
 		cbi("appfilter/dev_status", {hideapplybtn=true, hidesavebtn=true, hideresetbtn=true})),
-		_("用户列表"), 21).leaf=true
+		_("User list"), 21).leaf=true
 
 	entry({"admin", "network", "appfilter", "base_setting"}, 
-        cbi("appfilter/base_setting"), _("应用过滤规则"), 22).leaf=true
+        cbi("appfilter/base_setting"), _("App Filter Rules"), 22).leaf=true
 
 	entry({"admin", "network", "appfilter", "user_setting"}, 
-		cbi("appfilter/user_setting"), _("生效用户"), 23).leaf=true
+		cbi("appfilter/user_setting"), _("Effective User"), 23).leaf=true
 
 	entry({"admin", "network", "appfilter", "time_setting"}, 
-		cbi("appfilter/time_setting"), _("生效时间"), 24).leaf=true
+		cbi("appfilter/time_setting"), _("Effective Time"), 24).leaf=true
 
 	entry({"admin", "network", "appfilter", "feature"}, 
 		cbi("appfilter/feature", {hideapplybtn=true, hidesavebtn=true, hideresetbtn=true}), _("特征库升级"), 25).leaf=true

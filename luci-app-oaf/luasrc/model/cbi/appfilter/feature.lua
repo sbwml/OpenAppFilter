@@ -13,7 +13,7 @@ local SYS = require "luci.sys"
 local m, s
 
 m = Map("appfilter", translate(""),
-    translate("特征库用于描述app特征，app过滤效果和个数依赖特征库"))
+    translate("Feature library is used to describe app features, app filtering effect and number-dependent feature library"))
 
 local rule_count = 0
 local version = ""
@@ -22,9 +22,9 @@ if nixio.fs.access("/tmp/feature.cfg") then
     version = SYS.exec("cat /tmp/feature.cfg |grep \"#version\" | awk '{print $2}'")
 end
 
-local display_str = "<strong>当前版本:  </strong>" .. version .. "<br><strong>特征码个数:</strong>  " ..
+local display_str = "<strong>" .. translate("Current Version") .. ":  </strong>" .. version .. "<br><strong>" .. translate("App Feature Num") .. ":</strong>  " ..
                         rule_count ..
-                        "<br><strong>  下载地址:</strong><a href=\"https://destan19.github.io\">https://destan19.github.io</a>"
+                        "<br><strong>  " .. translate("Download Link") .. ":</strong><a href=\"https://destan19.github.io\" target=\"_blank\">https://destan19.github.io</a>"
 s = m:section(TypedSection, "feature", translate("Update feature"), display_str)
 
 fu = s:option(FileUpload, "")

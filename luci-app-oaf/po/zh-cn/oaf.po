@@ -8,6 +8,9 @@ msgstr "应用过滤"
 msgid "App Filter"
 msgstr "应用过滤"
 
+msgid "User list"
+msgstr "用户列表"
+
 msgid "game"
 msgstr "游戏"
 
@@ -43,6 +46,15 @@ msgstr "基本设置"
 
 msgid "App Filter Rules"
 msgstr "应用过滤规则"
+
+msgid "Effective User"
+msgstr "生效用户"
+
+msgid "Effective Time"
+msgstr "生效时间"
+
+msgid "Bypass mode is not currently supported, please turn off all possible conflicting modules such as acceleration (acc), advertisement filtering, multi-dialing, etc."
+msgstr "目前不支持旁路模式，请先关闭所有加速(acc)、广告过滤、多拨等可能冲突的模块"
 
 msgid "It takes effect for all users by default, and only takes effect for the selected users when checked"
 msgstr "默认对所有用户生效，勾选后只对选择的用户生效"
@@ -80,10 +92,14 @@ msgstr "过滤状态"
 msgid "Data Statistics"
 msgstr "数据统计"
 
-
+msgid "Feature library is used to describe app features, app filtering effect and number-dependent feature library"
+msgstr "特征库用于描述app特征，app过滤效果和个数依赖特征库"
 
 msgid "Current Version"
 msgstr "当前版本"
+
+msgid "Download Link"
+msgstr "下载地址"
 
 msgid "App Feature Num"
 msgstr "特征码个数"
@@ -156,5 +172,3 @@ msgstr "分"
 
 msgid "Enable App Filter"
 msgstr "开启应用过滤"
-
-
