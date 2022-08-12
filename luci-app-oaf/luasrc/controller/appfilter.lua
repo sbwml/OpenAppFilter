@@ -9,7 +9,7 @@ function index()
 	
 	local page
 	entry({"admin", "network", "appfilter"}, 
-	alias("admin", "network", "appfilter", "user_list"),
+	alias("admin", "network", "appfilter", "base_setting"),
 		_("App Filter"), 100).dependent = true
 
 	entry({"admin", "network", "appfilter", "base_setting"},
