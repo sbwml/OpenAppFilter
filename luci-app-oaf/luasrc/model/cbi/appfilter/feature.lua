@@ -22,9 +22,9 @@ if nixio.fs.access("/tmp/feature.cfg") then
     version = SYS.exec("cat /tmp/feature.cfg |grep \"#version\" | awk '{print $2}'")
 end
 
-local display_str = "<strong>" .. translate("Current Version") .. ":  </strong>" .. version .. "<br><strong>" .. translate("App Feature Num") .. ":</strong>  " ..
-                        rule_count ..
-                        "<br><strong>  " .. translate("Download Link") .. ":</strong><a href=\"https://destan19.github.io\" target=\"_blank\">https://destan19.github.io</a>"
+local display_str = translate("Current Version: ") .. "<font color='#00bd3e'>" .. version .. "</font>" .. "<br>" .. translate("App Feature Num: ") ..
+                        "<font color='#00bd3e'>" .. rule_count .. "</font>" ..
+                        "<br>" .. translate("Download Link: ") .. "<a href=\"https://destan19.github.io/feature/\" target=\"_blank\">https://destan19.github.io/feature/</a>"
 s = m:section(TypedSection, "feature", translate("Update feature"), display_str)
 
 fu = s:option(FileUpload, "")

@@ -95,14 +95,14 @@ msgstr "数据统计"
 msgid "Feature library is used to describe app features, app filtering effect and number-dependent feature library"
 msgstr "特征库用于描述app特征，app过滤效果和个数依赖特征库"
 
-msgid "Current Version"
-msgstr "当前版本"
+msgid "Current Version: "
+msgstr "当前版本："
 
-msgid "Download Link"
-msgstr "下载地址"
+msgid "Download Link: "
+msgstr "下载地址："
 
-msgid "App Feature Num"
-msgstr "特征码个数"
+msgid "App Feature Num: "
+msgstr "特征码个数："
 
 msgid "Update feature"
 msgstr "特征库更新"
@@ -137,8 +137,8 @@ msgstr "更新特征库成功，请刷新页面!"
 msgid "Failed to update feature file, format error"
 msgstr "更新特征库失败，格式错误!"
 
-msgid "Select feature file:"
-msgstr "选择本地特征库文件:"
+msgid "Select feature file"
+msgstr "选择特征库文件"
 
 msgid "Start Time"
 msgstr "开始时间"
