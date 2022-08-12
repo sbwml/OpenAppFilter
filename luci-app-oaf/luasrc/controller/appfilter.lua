@@ -10,15 +10,15 @@ function index()
 	local page
 	entry({"admin", "network", "appfilter"}, 
 	alias("admin", "network", "appfilter", "user_list"),
-		_("App Filter"), 20).dependent = true
+		_("App Filter"), 100).dependent = true
 
-	entry({"admin", "network", "appfilter", "user_list"}, 
-		arcombine(cbi("appfilter/user_list",{hideapplybtn=true, hidesavebtn=true, hideresetbtn=true}), 
+	entry({"admin", "network", "appfilter", "base_setting"},
+        cbi("appfilter/base_setting"), _("Basic Settings"), 21).leaf=true
+
+	entry({"admin", "network", "appfilter", "user_list"},
+		arcombine(cbi("appfilter/user_list",{hideapplybtn=true, hidesavebtn=true, hideresetbtn=true}),
 		cbi("appfilter/dev_status", {hideapplybtn=true, hidesavebtn=true, hideresetbtn=true})),
-		_("User list"), 21).leaf=true
-
-	entry({"admin", "network", "appfilter", "base_setting"}, 
-        cbi("appfilter/base_setting"), _("App Filter Rules"), 22).leaf=true
+		_("User list"), 22).leaf=true
 
 	entry({"admin", "network", "appfilter", "user_setting"}, 
 		cbi("appfilter/user_setting"), _("Effective User"), 23).leaf=true
