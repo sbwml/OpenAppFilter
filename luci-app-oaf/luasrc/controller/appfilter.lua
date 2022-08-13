@@ -27,7 +27,7 @@ function index()
 		cbi("appfilter/time_setting"), _("Effective Time"), 24).leaf=true
 
 	entry({"admin", "network", "appfilter", "feature"}, 
-		cbi("appfilter/feature", {hideapplybtn=true, hidesavebtn=true, hideresetbtn=true}), _("特征库升级"), 25).leaf=true
+		cbi("appfilter/feature", {hideapplybtn=true, hidesavebtn=true, hideresetbtn=true}), _("Update feature"), 25).leaf=true
 
 	page = entry({"admin", "network", "user_status"}, call("user_status"), nil)
 	page.leaf = true
