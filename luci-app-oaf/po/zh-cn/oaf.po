@@ -172,3 +172,9 @@ msgstr "分"
 
 msgid "Enable App Filter"
 msgstr "开启应用过滤"
+
+msgid "MAC"
+msgstr "MAC 地址"
+
+msgid "IP"
+msgstr "IP 地址"
