@@ -53,8 +53,8 @@ msgstr "生效用户"
 msgid "Effective Time"
 msgstr "生效时间"
 
-msgid "Bypass mode is not currently supported, please turn off all possible conflicting modules such as acceleration (acc), advertisement filtering, multi-dialing, etc."
-msgstr "目前不支持旁路模式，请先关闭所有加速(acc)、广告过滤、多拨等可能冲突的模块"
+msgid "Please turn off all possible conflicting modules such as acceleration (acc), advertisement filtering, multi-dialing, etc."
+msgstr "请先关闭所有加速(acc)、广告过滤、多拨等可能冲突的模块"
 
 msgid "It takes effect for all users by default, and only takes effect for the selected users when checked"
 msgstr "默认对所有用户生效，勾选后只对选择的用户生效"
@@ -140,11 +140,18 @@ msgstr "更新特征库失败，格式错误!"
 msgid "Select feature file"
 msgstr "选择特征库文件"
 
-msgid "Start Time"
-msgstr "开始时间"
+msgid "Start Time1"
+msgstr "开始时间1"
 
-msgid "End Time"
-msgstr "结束时间"
+msgid "End Time1"
+msgstr "结束时间1"
+
+
+msgid "Start Time2"
+msgstr "开始时间2"
+
+msgid "End Time2"
+msgstr "结束时间2"
 
 msgid "App Name"
 msgstr "App名称"
@@ -178,3 +185,30 @@ msgstr "MAC 地址"
 
 msgid "IP"
 msgstr "IP 地址"
+
+msgid "Working mode"
+msgstr "工作模式"
+
+msgid "Please select the mode correctly. Generally, it is the main route after WAN port forwarding. It is recommended to restart the device after switching the mode."
+msgstr "请正确选择模式，一般经过了WAN口转发则为主路由，建议切换模式后重启设备"
+
+msgid "Main router mode"
+msgstr "主路由模式"
+
+msgid "Bypass mode"
+msgstr "旁路由模式"
+
+msgid "Time 2 is optional, the start and end times need to be set at the same time, and the end time must be greater than the start time"
+msgstr "时间 2 为选填，开始和结束时间需要同时设置，结束时间要大于开始时间"
+
+msgid "Time Match Mode:"
+msgstr "时间匹配模式："
+
+msgid "Rules take effect within the time frame"
+msgstr "时间范围内规则生效"
+
+msgid "Rules take effect outside of time frame"
+msgstr "时间范围外规则生效"
+
+msgid "Format 01:00"
+msgstr "格式 01:00"

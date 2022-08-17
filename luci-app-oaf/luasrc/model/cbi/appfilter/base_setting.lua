@@ -13,11 +13,16 @@ local SYS = require "luci.sys"
 local m, s
 
 m = Map("appfilter", translate("App Filter"), translate(
-    "Bypass mode is not currently supported, please turn off all possible conflicting modules such as acceleration (acc), advertisement filtering, multi-dialing, etc."))
+    "Please turn off all possible conflicting modules such as acceleration (acc), advertisement filtering, multi-dialing, etc."))
 
 s = m:section(TypedSection, "global", translate("Basic Settings"))
 s:option(Flag, "enable", translate("Enable App Filter"), translate(""))
 s.anonymous = true
+
+o=s:option(ListValue, "work_mode", translate("Working mode"),translate("Please select the mode correctly. Generally, it is the main route after WAN port forwarding. It is recommended to restart the device after switching the mode.")) 
+o.default=0
+o:value(0, translate("Main router mode"))
+o:value(1, translate("Bypass mode"))
 
 local rule_count = 0
 local version = ""
