@@ -13,19 +13,25 @@ local SYS = require "luci.sys"
 local m, s
 
 m = Map("appfilter", translate(""),
-    translate("Feature library is used to describe app features, app filtering effect and number-dependent feature library"))
+    translate("The feature library is used to describe app features, app filtering effect and number-dependent feature library"))
 
 local rule_count = 0
 local version = ""
+local format = ""
 if nixio.fs.access("/tmp/feature.cfg") then
     rule_count = tonumber(SYS.exec("cat /tmp/feature.cfg | wc -l"))
     version = SYS.exec("cat /tmp/feature.cfg |grep \"#version\" | awk '{print $2}'")
 end
+format=SYS.exec("uci get appfilter.feature.format")
+if format == "" then
+    format="v2.0"
+end
 
-local display_str = translate("Current Version:") .. "<font color='#00bd3e'>" .. version .. "</font>" .. "<br>" .. translate("App Feature Num:") ..
-                        "<font color='#00bd3e'>" .. rule_count .. "</font>" ..
-                        "<br>" .. translate("Download Link:") .. "<a href=\"https://destan19.github.io/feature/\" target=\"_blank\">https://destan19.github.io/feature/</a>"
-s = m:section(TypedSection, "feature", translate("Update feature"), display_str)
+local display_str = "<strong>"..translate("Current Version:")..":  </strong>" .. version .. 
+                    "<br><strong>"..translate("Feature format:")..":</strong>  " ..format ..
+                    "<br><strong>"..translate("App Feature Num:")..":</strong>  " ..rule_count ..
+                    "<br><strong>"..translate("Feature download:")..":</strong><a href=\"http://www.openappfilter.com\" target=\"_blank\">www.openappfilter.com</a>"
+s = m:section(TypedSection, "feature", translate("App Feature"), display_str)
 
 fu = s:option(FileUpload, "")
 fu.template = "cbi/oaf_upload"
@@ -38,6 +44,8 @@ local dir, fd
 dir = "/tmp/upload/"
 nixio.fs.mkdir(dir)
 http.setfilehandler(function(meta, chunk, eof)
+    local feature_file = "/etc/appfilter/feature.cfg"
+    local f_format="v1.0"
     if not fd then
         if not meta then
             return
@@ -55,16 +63,25 @@ http.setfilehandler(function(meta, chunk, eof)
     if eof and fd then
         fd:close()
         local fd2 = io.open("/tmp/upload/" .. meta.file)
-        local line = fd2:read("*l");
+        local version_line = fd2:read("*l");
+        local format_line = fd2:read("*l");
         fd2:close()
-        local ret = string.match(line, "#version")
-        local feature_file = "/etc/appfilter/feature.cfg"
+        local ret = string.match(version_line, "#version")
         if ret ~= nil then
+            if string.match(format_line, "#format") then
+                f_format = SYS.exec("echo '"..format_line.."'|awk '{print $2}'")
+            end
+            if not string.match(f_format, format)  then
+                um.value = translate("Failed to update feature file, format error"..",feature format:"..f_format)
+                os.execute("rm /tmp/upload/* -fr");
+                return
+            end
             local cmd = "cp /tmp/upload/" .. meta.file .. " " .. feature_file;
             os.execute(cmd);
             os.execute("chmod 666 " .. feature_file);
             os.execute("rm /tmp/appfilter -fr");
-            luci.sys.exec("/etc/init.d/appfilter restart &");
+            os.execute("uci set appfilter.feature.update=1");
+            luci.sys.exec("/etc/init.d/appfilter restart");
             um.value = translate("Update the feature file successfully, please refresh the page")
         else
             um.value = translate("Failed to update feature file, format error")

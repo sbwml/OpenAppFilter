@@ -14,14 +14,14 @@ local m, s
 
 m = Map("appfilter", translate(""), translate(""))
 
-s = m:section(TypedSection, "time", translate("Time Setting"),translate("Time 2 is optional, the start and end times need to be set at the same time, and the end time must be greater than the start time"))
+s = m:section(TypedSection, "time", translate("Time Setting"),translate("The second time is optional, the end time must be greater than the start time"))
 s.anonymous = true
 
 
-o=s:option(ListValue, "time_mode", translate("Time Match Mode:"),translate("")) 
+o=s:option(ListValue, "time_mode", translate("Time Mode"),translate("")) 
 o.default=0
-o:value(0, translate("Rules take effect within the time frame"))
-o:value(1, translate("Rules take effect outside of time frame"))
+o:value(0,translate("Blacklist mode"))
+o:value(1,translate("Whitelist mode"))
 
 days = s:option(MultiValue, "days", "", translate(""))
 days.widget = "checkbox"
