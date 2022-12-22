@@ -18,7 +18,7 @@ function index()
 	entry({"admin", "network", "appfilter", "user_list"},
 		arcombine(cbi("appfilter/user_list",{hideapplybtn=true, hidesavebtn=true, hideresetbtn=true}),
 		cbi("appfilter/dev_status", {hideapplybtn=true, hidesavebtn=true, hideresetbtn=true})),
-		_("User list"), 22).leaf=true
+		_("User List"), 22).leaf=true
 
 	entry({"admin", "network", "appfilter", "user_setting"}, 
 		cbi("appfilter/user_setting"), _("Effective User"), 23).leaf=true
