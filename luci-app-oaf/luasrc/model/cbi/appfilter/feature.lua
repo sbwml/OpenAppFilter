@@ -27,11 +27,11 @@ if format == "" then
     format="v2.0"
 end
 
-local display_str = "<strong>"..translate("Current Version:")..":  </strong>" .. version .. 
-                    "<br><strong>"..translate("Feature format:")..":</strong>  " ..format ..
-                    "<br><strong>"..translate("App Feature Num:")..":</strong>  " ..rule_count ..
-                    "<br><strong>"..translate("Feature download:")..":</strong><a href=\"http://www.openappfilter.com\" target=\"_blank\">www.openappfilter.com</a>"
-s = m:section(TypedSection, "feature", translate("App Feature"), display_str)
+local display_str = translate("Current Version:") .. "<font color='#00bd3e'>" .. version .. "</font>" ..
+                    "<br>"..translate("Feature format:").."<font color='#00bd3e'>" ..format .. "</font>" ..
+                    "<br>"..translate("App Feature Num:").."<font color='#00bd3e'>" ..rule_count .. "</font>" ..
+                    "<br>"..translate("Feature download:").."<a href=\"http://www.openappfilter.com\" target=\"_blank\">www.openappfilter.com</a>"
+s = m:section(TypedSection, "feature", translate("Update feature"), display_str)
 
 fu = s:option(FileUpload, "")
 fu.template = "cbi/oaf_upload"
