@@ -13,7 +13,7 @@ local SYS = require "luci.sys"
 local m, s
 
 m = Map("appfilter", translate("App Filter"), translate(
-    "Please close the modules that may conflict, such as acceleration, ad filtering, and multi-dial"))
+    "Please close the modules that may conflict, such as offload, ad filtering, and multi-dial"))
 
 s = m:section(TypedSection, "global", translate("Basic Settings"))
 s:option(Flag, "enable", translate("Enable App Filter"), translate(""))
