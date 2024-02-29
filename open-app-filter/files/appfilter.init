@@ -71,11 +71,6 @@ stop_service(){
 }
 
 start_service(){
-	if [ "$(uci -q get appfilter.global.enable)" != 1 ]; then
-		stop_service
-		return 1
-	fi
-
 	local update
 	rm -f $FEATURE_FILE
 
@@ -91,8 +86,12 @@ start_service(){
 			ln -s /etc/appfilter/feature_en.cfg $FEATURE_FILE
 		fi
 	fi
-	disable_offload_nat6
 	gen_class.sh /tmp/feature.cfg
+	if [ "$(uci -q get appfilter.global.enable)" != 1 ]; then
+		stop_service
+		return 1
+	fi
+	disable_offload_nat6
 	insmod oaf
 	/usr/bin/oaf_rule reload
 	procd_open_instance
