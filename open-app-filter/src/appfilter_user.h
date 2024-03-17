@@ -37,6 +37,9 @@ THE SOFTWARE.
 #define MAX_SUPPORT_DEV_NUM 64
 #define SECONDS_PER_DAY (24 * 3600)
 
+int check_same_network(const char* lan_ip, const char* lan_mask, const char* ip_buf);
+void exec_with_result_line(const char* command, char* result, size_t result_size);
+
 //extern dev_node_t *dev_hash_table[MAX_DEV_NODE_HASH_SIZE];
 
 /*

@@ -147,7 +147,7 @@ void appfilter_nl_handler(struct uloop_fd *u, unsigned int ev)
         //	node->stat[type - 1][id - 1].total_down_bytes += json_object_get_int(down_obj);
         //	node->stat[type - 1][id - 1].total_up_bytes += json_object_get_int(up_obj);
 
-        int hash = hash_appid(appid);
+        int hash = hash_appid((const char*)appid);
         visit_info_t *head = node->visit_htable[hash];
 
         if (head && (cur_time.tv_sec - head->latest_time) < 300)

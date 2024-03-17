@@ -25,6 +25,8 @@ THE SOFTWARE.
 #define OAF_NETLINK_ID 29
 #define MAX_OAF_NETLINK_MSG_LEN 1024
 
+int hash_appid(const char* appid);
+
 struct af_msg_hdr
 {
     int magic;
