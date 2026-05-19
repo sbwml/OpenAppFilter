@@ -68,71 +68,73 @@ return L.view.extend({
 			E('h2', {}, _('Advanced Settings')),
 			E('div', { 'class': 'cbi-map-descr' }, _('Configure driver autoloading, network acceleration bypass, and custom LAN interfaces.')),
 			
-			E('div', { 'class': 'cbi-section cbi-tblsection' }, [
-				E('div', { 'style': 'max-width: 1000px; padding: 10px;' }, [
+			E('div', { 'class': 'cbi-section' }, [
+				E('div', { 'class': 'cbi-section-node' }, [
 					
 					// version info
-					E('div', { 'class': 'cbi-value', 'style': 'margin-bottom: 15px;' }, [
-						E('label', { 'class': 'cbi-value-title', 'style': 'font-weight: bold; width: 220px;' }, _('OAF Version') + ':'),
-						E('div', { 'class': 'cbi-value-field', 'style': 'padding: 0;' }, view.statusData.version || '--')
+					E('div', { 'class': 'cbi-value' }, [
+						E('label', { 'class': 'cbi-value-title' }, _('OAF Version') + ':'),
+						E('div', { 'class': 'cbi-value-field' }, view.statusData.version || '--')
 					]),
-					E('div', { 'class': 'cbi-value', 'style': 'margin-bottom: 25px;' }, [
-						E('label', { 'class': 'cbi-value-title', 'style': 'font-weight: bold; width: 220px;' }, _('OAF Driver Version') + ':'),
-						E('div', { 'class': 'cbi-value-field', 'style': 'padding: 0;' }, view.statusData.engine_version || '--')
+					E('div', { 'class': 'cbi-value' }, [
+						E('label', { 'class': 'cbi-value-title' }, _('OAF Driver Version') + ':'),
+						E('div', { 'class': 'cbi-value-field' }, view.statusData.engine_version || '--')
 					]),
 
 					// disable hnat
-					E('div', { 'class': 'cbi-value', 'style': 'margin-bottom: 10px; display: flex; align-items: center;' }, [
-						E('label', { 'for': 'disableHnatSwitch', 'style': 'font-weight: bold; width: 220px; display: inline-block;' }, _('Disable Software/Hardware Acceleration') + ':'),
-						E('label', { 'class': 'switch' }, [
+					E('div', { 'class': 'cbi-value' }, [
+						E('label', { 'class': 'cbi-value-title', 'for': 'disableHnatSwitch' }, _('Disable Software/Hardware Acceleration') + ':'),
+						E('div', { 'class': 'cbi-value-field' }, [
 							E('input', {
 								'type': 'checkbox',
 								'id': 'disableHnatSwitch',
-								'name': 'disableHnatSwitch'
+								'name': 'disableHnatSwitch',
+								'class': 'cbi-input-checkbox'
 							}),
-							E('span', { 'class': 'slider' })
+							E('div', { 'class': 'cbi-value-description' }, _('Software and hardware acceleration, NAT offload and other modules may affect filtering or statistics functions. This interface only attempts to turn them off, but may not be completely successful. Please check the status in the firewall or network acceleration menu. Re-enabling acceleration requires a device restart to take effect.'))
 						])
 					]),
-					E('p', { 'class': 'desc', 'style': 'margin-bottom: 25px; color: gray;' }, _('Software and hardware acceleration, NAT offload and other modules may affect filtering or statistics functions. This interface only attempts to turn them off, but may not be completely successful. Please check the status in the firewall or network acceleration menu. Re-enabling acceleration requires a device restart to take effect.')),
 
 					// auto load driver
-					E('div', { 'class': 'cbi-value', 'style': 'margin-bottom: 10px; display: flex; align-items: center;' }, [
-						E('label', { 'for': 'autoLoadEngineSwitch', 'style': 'font-weight: bold; width: 220px; display: inline-block;' }, _('Auto-load oaf driver') + ':'),
-						E('label', { 'class': 'switch' }, [
+					E('div', { 'class': 'cbi-value' }, [
+						E('label', { 'class': 'cbi-value-title', 'for': 'autoLoadEngineSwitch' }, _('Auto-load oaf driver') + ':'),
+						E('div', { 'class': 'cbi-value-field' }, [
 							E('input', {
 								'type': 'checkbox',
 								'id': 'autoLoadEngineSwitch',
-								'name': 'autoLoadEngineSwitch'
+								'name': 'autoLoadEngineSwitch',
+								'class': 'cbi-input-checkbox'
 							}),
-							E('span', { 'class': 'slider' })
+							E('div', { 'class': 'cbi-value-description' }, _('If the oaf driver cannot be manually unloaded or the current driver is unstable, you can turn off auto-loading at startup and manually install a suitable driver. It is recommended to use the official stable OpenWrt firmware.'))
 						])
 					]),
-					E('p', { 'class': 'desc', 'style': 'margin-bottom: 25px; color: gray;' }, _('If the oaf driver cannot be manually unloaded or the current driver is unstable, you can turn off auto-loading at startup and manually install a suitable driver. It is recommended to use the official stable OpenWrt firmware.')),
 
 					// lan port
-					E('div', { 'class': 'cbi-value', 'style': 'margin-bottom: 10px; display: flex; align-items: center;' }, [
-						E('label', { 'for': 'lan_ifname', 'style': 'font-weight: bold; width: 220px; display: inline-block;' }, _('LAN Interface') + ':'),
-						E('select', {
-							'id': 'lan_ifname',
-							'name': 'lan_ifname',
-							'style': 'padding: 5px; width: 200px; border: 1px solid #ccc; border-radius: 4px; height: 34px;'
-						}, deviceNames.map(name => {
-							return E('option', {
-								'value': name,
-								'selected': (name === currentVal) ? 'selected' : null
-							}, name);
-						}))
-					]),
-					E('p', { 'class': 'desc', 'style': 'margin-bottom: 30px; color: gray;' }, _('The name of the LAN interface, used for detecting terminal information. The system default is bridge interface (br-lan). If the LAN port has been modified to a physical interface, please modify it to the corresponding name, such as eth0, support fuzzy matching. For example, you can setup lan to match br-lan and br-lan2.')),
-
-					E('div', { 'class': 'button-container', 'style': 'border-top: 1px solid #eee; padding-top: 20px;' }, [
-						E('button', {
-							'type': 'button',
-							'class': 'cbi-button cbi-button-save',
-							'click': () => view.submitHandle()
-						}, _('Save'))
+					E('div', { 'class': 'cbi-value' }, [
+						E('label', { 'class': 'cbi-value-title', 'for': 'lan_ifname' }, _('LAN Interface') + ':'),
+						E('div', { 'class': 'cbi-value-field' }, [
+							E('select', {
+								'id': 'lan_ifname',
+								'name': 'lan_ifname',
+								'class': 'cbi-input-select'
+							}, deviceNames.map(name => {
+								return E('option', {
+									'value': name,
+									'selected': (name === currentVal) ? 'selected' : null
+								}, name);
+							})),
+							E('div', { 'class': 'cbi-value-description' }, _('The name of the LAN interface, used for detecting terminal information. The system default is bridge interface (br-lan). If the LAN port has been modified to a physical interface, please modify it to the corresponding name, such as eth0, support fuzzy matching. For example, you can setup lan to match br-lan and br-lan2.'))
+						])
 					])
 				])
+			]),
+
+			E('div', { 'class': 'cbi-page-actions' }, [
+				E('button', {
+					'type': 'button',
+					'class': 'cbi-button cbi-button-save',
+					'click': () => view.submitHandle()
+				}, _('Save'))
 			])
 		]);
 

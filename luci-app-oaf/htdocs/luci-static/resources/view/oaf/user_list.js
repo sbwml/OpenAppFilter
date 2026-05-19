@@ -82,94 +82,6 @@ return L.view.extend({
 						])
 					])
 				])
-			]),
-
-			E('div', { 'id': 'detailsModal', 'class': 'oaf-modal', 'style': 'display: none;' }, [
-				E('div', { 'class': 'oaf-modal-content', 'style': 'width: 800px; height: 550px;' }, [
-					E('button', {
-						'type': 'button',
-						'class': 'oaf-modal-close',
-						'click': () => view.closeModal('detailsModal')
-					}, '×'),
-					E('h4', { 'class': 'oaf-modal-title', 'style': 'margin: 0 0 20px 0; font-size: 18px;' }, [
-						_('Device Details'),
-						E('span', { 'id': 'deviceInfo', 'class': 'oaf-modal-subtitle', 'style': 'font-size: 14px; font-weight: normal; margin-left: 10px; opacity: 0.8;' })
-					]),
-					E('ul', { 'class': 'tab-list' }, [
-						E('li', {
-							'class': 'tab-item active',
-							'click': (ev) => view.switchTab('tab2', ev.target)
-						}, _('App Statistics')),
-						E('li', {
-							'class': 'tab-item',
-							'click': (ev) => view.switchTab('tab3', ev.target)
-						}, _('Access Records'))
-					]),
-					E('div', { 'id': 'tab2', 'class': 'tab-body active' }, [
-						E('div', { 'class': 'pie-chart', 'style': 'width: 100%;' }, [
-							E('div', { 'id': 'app_time_chart', 'style': 'width: 100%; height: 350px;' })
-						])
-					]),
-					E('div', { 'id': 'tab3', 'class': 'tab-body' }, [
-						E('div', { 'style': 'max-height: 350px; overflow-y: auto; padding-right: 10px;' }, [
-							E('table', { 'class': 'table cbi-section-table', 'id': 'visit_list_table' }, [
-								E('tr', { 'class': 'tr table-titles' }, [
-									E('th', { 'class': 'th' }, _('App Name')),
-									E('th', { 'class': 'th' }, _('Start Time')),
-									E('th', { 'class': 'th' }, _('Last Time')),
-									E('th', { 'class': 'th' }, _('Duration')),
-									E('th', { 'class': 'th' }, _('Filter Status'))
-								]),
-								E('tr', { 'class': 'tr', 'id': 'records_loading_row' }, [
-									E('td', { 'class': 'td', 'colspan': '5' }, [
-										E('em', {}, _('Collecting data...'))
-									])
-								])
-							])
-						])
-					])
-				])
-			]),
-
-			E('div', { 'id': 'nicknameModal', 'class': 'oaf-modal', 'style': 'display: none;' }, [
-				E('div', { 'class': 'oaf-modal-content', 'style': 'width: 450px;' }, [
-					E('button', {
-						'type': 'button',
-						'class': 'oaf-modal-close',
-						'click': () => view.closeModal('nicknameModal')
-					}, '×'),
-					E('h4', { 'class': 'oaf-modal-title', 'style': 'margin: 0 0 20px 0; font-size: 18px;' }, _('Modify Remark')),
-					E('div', { 'style': 'margin-bottom: 20px;' }, [
-						E('p', { 'style': 'margin: 0 0 8px 0; font-size: 14px; opacity: 0.8;' }, [
-							E('span', { 'class': 'field-label', 'style': 'font-weight: bold; width: 100px; display: inline-block;' }, _('MAC Address') + ': '),
-							E('span', { 'id': 'nicknameMacDisplay', 'style': 'font-weight: 500;' }, '--')
-						])
-					]),
-					E('div', { 'style': 'margin-bottom: 30px;' }, [
-						E('p', { 'style': 'margin: 0 0 8px 0; font-size: 14px; opacity: 0.8;' }, [
-							E('span', { 'class': 'field-label', 'style': 'font-weight: bold;' }, _('Remark') + ':')
-						]),
-						E('input', {
-							'type': 'text',
-							'id': 'nicknameInput',
-							'class': 'cbi-input-text',
-							'style': 'padding: 10px; border-radius: 4px; width: 100%; font-size: 14px;',
-							'placeholder': _('Enter nickname or remark')
-						})
-					]),
-					E('div', { 'style': 'display: flex; justify-content: flex-end; gap: 15px;' }, [
-						E('button', {
-							'type': 'button',
-							'class': 'cbi-button cbi-button-neutral',
-							'click': () => view.closeModal('nicknameModal')
-						}, _('Cancel')),
-						E('button', {
-							'type': 'button',
-							'class': 'cbi-button cbi-button-action',
-							'click': () => view.submitNicknameChange()
-						}, _('OK'))
-					])
-				])
 			])
 		]);
 
@@ -298,13 +210,71 @@ return L.view.extend({
 		const view = this;
 		view.currentMac = mac;
 
-		const modal = document.getElementById('detailsModal');
-		modal.style.display = 'flex';
-		view.updateDeviceInfoTitle(mac);
+		let displayName = mac;
+		if (this.userListData && this.userListData.list) {
+			const device = this.userListData.list.find(user => user.mac === mac);
+			if (device) {
+				displayName = device.nickname || device.hostname || mac;
+				if (displayName !== mac) {
+					displayName = `${displayName} (${mac})`;
+				}
+			}
+		}
 
-		const firstTabItem = modal.querySelector('.tab-item');
-		if (firstTabItem) {
-			view.switchTab('tab2', firstTabItem);
+		const tabList = E('ul', { 'class': 'cbi-tabmenu' }, [
+			E('li', {
+				'class': 'cbi-tab active',
+				'click': (ev) => view.switchTab('tab2', ev.currentTarget)
+			}, E('a', { 'href': '#' }, _('App Statistics'))),
+			E('li', {
+				'class': 'cbi-tab',
+				'click': (ev) => view.switchTab('tab3', ev.currentTarget)
+			}, E('a', { 'href': '#' }, _('Access Records')))
+		]);
+
+		const tab2 = E('div', { 'id': 'tab2', 'class': 'tab-body', 'style': 'display: block; flex: 1;' }, [
+			E('div', { 'class': 'pie-chart', 'style': 'width: 100%;' }, [
+				E('div', { 'id': 'app_time_chart', 'style': 'width: 100%; height: 350px;' })
+			])
+		]);
+
+		const tab3 = E('div', { 'id': 'tab3', 'class': 'tab-body', 'style': 'display: none; flex: 1; overflow-y: auto;' }, [
+			E('div', { 'style': 'max-height: 350px; overflow-y: auto; padding-right: 10px;' }, [
+				E('table', { 'class': 'table cbi-section-table', 'id': 'visit_list_table' }, [
+					E('tr', { 'class': 'tr table-titles' }, [
+						E('th', { 'class': 'th' }, _('App Name')),
+						E('th', { 'class': 'th' }, _('Start Time')),
+						E('th', { 'class': 'th' }, _('Last Time')),
+						E('th', { 'class': 'th' }, _('Duration')),
+						E('th', { 'class': 'th' }, _('Filter Status'))
+					]),
+					E('tr', { 'class': 'tr', 'id': 'records_loading_row' }, [
+						E('td', { 'class': 'td', 'colspan': '5' }, [
+							E('em', {}, _('Collecting data...'))
+						])
+					])
+				])
+			])
+		]);
+
+		ui.showModal(`${_('Device Details')}: ${displayName}`, [
+			tabList,
+			tab2,
+			tab3,
+			E('div', { 'class': 'right', 'style': 'margin-top: auto; padding-top: 15px;' }, [
+				E('button', {
+					'class': 'cbi-button cbi-button-neutral',
+					'click': () => ui.hideModal()
+				}, _('Close'))
+			])
+		]);
+
+		const modalEl = document.querySelector('.modal[role="dialog"], .ui-modal, .modal');
+		if (modalEl) {
+			modalEl.style.maxWidth = '800px';
+			modalEl.style.maxHeight = '550px';
+			modalEl.style.display = 'flex';
+			modalEl.style.flexDirection = 'column';
 		}
 
 		// get visit time data
@@ -312,46 +282,15 @@ return L.view.extend({
 			view.displayAppVisitView((data && data.list) ? data.list : []);
 		});
 
-		const tb = document.getElementById('visit_list_table');
-		if (tb) {
-			while (tb.rows.length > 1) {
-				tb.deleteRow(1);
-			}
-			const tr = tb.insertRow(-1);
-			const td = tr.insertCell(-1);
-			td.colSpan = 5;
-			td.className = 'td text-center';
-			td.innerHTML = `<em>${_('Collecting data...')}</em>`;
-		}
-
 		callGetDevVisitList(mac).then((data) => {
 			view.renderVisitListTable(data || { list: [] });
 		});
-	},
-
-	updateDeviceInfoTitle(mac) {
-		let deviceInfo = `(${mac})`;
-		if (this.userListData && this.userListData.list) {
-			const device = this.userListData.list.find(user => user.mac === mac);
-			if (device) {
-				const name = device.nickname || device.hostname || "";
-				if (name) {
-					deviceInfo = `${name} (${mac})`;
-				}
-			}
-		}
-		document.getElementById('deviceInfo').textContent = deviceInfo;
 	},
 
 	showModifyNickname(mac) {
 		const view = this;
 		view.currentMac = mac;
 
-		const modal = document.getElementById('nicknameModal');
-		modal.style.display = 'flex';
-
-		document.getElementById('nicknameMacDisplay').textContent = mac;
-		
 		let currentNickname = '';
 		if (view.userListData && view.userListData.list) {
 			const device = view.userListData.list.find(user => user.mac === mac);
@@ -359,7 +298,38 @@ return L.view.extend({
 				currentNickname = device.nickname || '';
 			}
 		}
-		document.getElementById('nicknameInput').value = currentNickname;
+
+		const input = E('input', {
+			'type': 'text',
+			'class': 'cbi-input-text',
+			'style': 'width: 100%;',
+			'value': currentNickname,
+			'placeholder': _('Enter nickname or remark')
+		});
+
+		ui.showModal(_('Modify Remark'), [
+			E('div', { 'class': 'cbi-map' }, [
+				E('div', { 'class': 'cbi-value' }, [
+					E('label', { 'class': 'cbi-value-title' }, _('MAC Address') + ':'),
+					E('div', { 'class': 'cbi-value-field', 'style': 'font-weight: bold;' }, mac)
+				]),
+				E('div', { 'class': 'cbi-value' }, [
+					E('label', { 'class': 'cbi-value-title' }, _('Remark') + ':'),
+					E('div', { 'class': 'cbi-value-field' }, input)
+				])
+			]),
+			E('div', { 'class': 'right' }, [
+				E('button', {
+					'class': 'cbi-button cbi-button-neutral',
+					'click': () => ui.hideModal()
+				}, _('Cancel')),
+				' ',
+				E('button', {
+					'class': 'cbi-button cbi-button-action',
+					'click': () => view.submitNicknameChange(input)
+				}, _('OK'))
+			])
+		]);
 	},
 
 	validateNickname(nickname) {
@@ -367,10 +337,10 @@ return L.view.extend({
 		return !invalidChars.test(nickname) && nickname.length <= 32;
 	},
 
-	submitNicknameChange() {
+	submitNicknameChange(input) {
 		const view = this;
 		const mac = view.currentMac;
-		const nickname = document.getElementById('nicknameInput').value.trim();
+		const nickname = input.value.trim();
 
 		if (nickname !== '' && !view.validateNickname(nickname)) {
 			ui.addNotification(null, E('p', {}, _('Please enter a valid remark (no spaces, quotes, and max 32 characters).')), 'danger');
@@ -378,7 +348,7 @@ return L.view.extend({
 		}
 
 		callSetNickname(mac, nickname).then(() => {
-			view.closeModal('nicknameModal');
+			ui.hideModal();
 			ui.addNotification(null, E('p', {}, _('Settings saved successfully.')), 'info');
 			callGetAllUsers(3, 0).then((data) => {
 				if (data && data.data) {
@@ -391,29 +361,26 @@ return L.view.extend({
 		});
 	},
 
-	closeModal(modalId) {
-		const modal = document.getElementById(modalId);
-		if (modal) {
-			modal.style.display = 'none';
-		}
-	},
-
 	switchTab(tabId, tabItem) {
-		const modal = document.getElementById('detailsModal');
-		const tabBodies = modal.querySelectorAll('.tab-body');
-		const tabItems = modal.querySelectorAll('.tab-item');
+		const modal = document.querySelector('.ui-modal') || document.body;
+		const tab2 = modal.querySelector('#tab2');
+		const tab3 = modal.querySelector('#tab3');
+		const tabItems = modal.querySelectorAll('.cbi-tab');
 
-		tabBodies.forEach(tab => tab.classList.remove('active'));
 		tabItems.forEach(item => item.classList.remove('active'));
-
-		document.getElementById(tabId).classList.add('active');
 		tabItem.classList.add('active');
 
-		// resize chart if tab2
-		if (tabId === 'tab2' && this.echartsInstance) {
-			setTimeout(() => {
-				this.echartsInstance.resize();
-			}, 100);
+		if (tabId === 'tab2') {
+			if (tab2) tab2.style.display = 'block';
+			if (tab3) tab3.style.display = 'none';
+			if (this.echartsInstance) {
+				setTimeout(() => {
+					this.echartsInstance.resize();
+				}, 100);
+			}
+		} else {
+			if (tab2) tab2.style.display = 'none';
+			if (tab3) tab3.style.display = 'block';
 		}
 	},
 

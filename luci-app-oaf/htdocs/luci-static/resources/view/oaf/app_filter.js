@@ -71,73 +71,75 @@ return L.view.extend({
 			E('h2', {}, _('App Filter')),
 			E('div', { 'class': 'cbi-map-descr' }, _('Filter target internet applications, view running status, and customize blocking rules.')),
 			
-			E('div', { 'class': 'cbi-section cbi-tblsection' }, [
-				E('div', { 'style': 'max-width: 1000px; padding: 10px;' }, [
+			E('div', { 'class': 'cbi-section' }, [
+				E('div', { 'class': 'cbi-section-node' }, [
 					
 					// run status
-					E('div', { 'class': 'app_filter_status', 'style': 'margin-bottom: 15px; font-size: 14px;' }, [
-						E('strong', {}, _('Running Status') + ': '),
-						E('span', { 'id': 'run_status', 'style': 'font-weight: bold; color: red;' }, _('Not Running')),
-						E('span', { 'id': 'run_desc', 'style': 'font-size: 12px; margin-left: 8px; color: #666;' })
+					E('div', { 'class': 'cbi-value' }, [
+						E('label', { 'class': 'cbi-value-title' }, _('Running Status') + ':'),
+						E('div', { 'class': 'cbi-value-field' }, [
+							E('span', { 'id': 'run_status', 'style': 'font-weight: bold; color: red;' }, _('Not Running')),
+							E('span', { 'id': 'run_desc', 'style': 'margin-left: 8px;' })
+						])
 					]),
 
 					// global switch
-					E('div', { 'style': 'margin-top: 15px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap;' }, [
-						E('div', { 'style': 'display: flex; align-items: center; gap: 8px;' }, [
-							E('label', { 'for': 'filterSwitch', 'style': 'font-weight: bold;' }, _('App Filter') + ': '),
-							E('label', { 'class': 'switch' }, [
-								E('input', {
-									'type': 'checkbox',
-									'id': 'filterSwitch',
-									'name': 'filterSwitch',
-									'change': () => view.quickSaveBase()
-								}),
-								E('span', { 'class': 'slider' })
-							])
-						]),
-						E('div', { 'style': 'display: flex; align-items: center; gap: 8px;' }, [
-							E('label', { 'for': 'recordSwitch', 'style': 'font-weight: bold;' }, _('App Record') + ': '),
-							E('label', { 'class': 'switch' }, [
-								E('input', {
-									'type': 'checkbox',
-									'id': 'recordSwitch',
-									'name': 'recordSwitch',
-									'change': () => view.quickSaveBase()
-								}),
-								E('span', { 'class': 'slider' })
-							])
+					E('div', { 'class': 'cbi-value' }, [
+						E('label', { 'class': 'cbi-value-title', 'for': 'filterSwitch' }, _('App Filter') + ':'),
+						E('div', { 'class': 'cbi-value-field' }, [
+							E('input', {
+								'type': 'checkbox',
+								'id': 'filterSwitch',
+								'name': 'filterSwitch',
+								'class': 'cbi-input-checkbox',
+								'change': () => view.quickSaveBase()
+							})
+						])
+					]),
+
+					E('div', { 'class': 'cbi-value' }, [
+						E('label', { 'class': 'cbi-value-title', 'for': 'recordSwitch' }, _('App Record') + ':'),
+						E('div', { 'class': 'cbi-value-field' }, [
+							E('input', {
+								'type': 'checkbox',
+								'id': 'recordSwitch',
+								'name': 'recordSwitch',
+								'class': 'cbi-input-checkbox',
+								'change': () => view.quickSaveBase()
+							})
 						])
 					]),
 
 					// select work mode
-					E('div', { 'style': 'margin-top: 15px;' }, [
-						E('label', { 'for': 'workMode', 'style': 'font-weight: bold; margin-right: 8px;' }, _('Work Mode') + ': '),
-						E('select', { 
-							'id': 'workMode', 
-							'name': 'workMode',
-							'change': () => view.quickSaveBase()
-						}, [
-							E('option', { 'value': '0' }, _('Gateway Mode')),
-							E('option', { 'value': '1' }, _('Bypass Mode'))
+					E('div', { 'class': 'cbi-value' }, [
+						E('label', { 'class': 'cbi-value-title', 'for': 'workMode' }, _('Work Mode') + ':'),
+						E('div', { 'class': 'cbi-value-field' }, [
+							E('select', {
+								'id': 'workMode',
+								'name': 'workMode',
+								'class': 'cbi-input-select',
+								'change': () => view.quickSaveBase()
+							}, [
+								E('option', { 'value': '0' }, _('Gateway Mode')),
+								E('option', { 'value': '1' }, _('Bypass Mode'))
+							])
 						])
-					]),
-
-					// select app header
-					E('div', { 'style': 'margin-top: 25px; border-top: 1px solid #eee; padding-top: 20px;' }, [
-						E('strong', { 'style': 'font-size: 14px;' }, _('App Selection') + ':'),
-						E('p', { 'class': 'desc' }, _('If the App you want is not in the list, you can upgrade the feature library of the official website or customize the App.'))
-					]),
-
-					E('div', { 'id': 'appContainer' }),
-
-					E('div', { 'class': 'button-container', 'style': 'margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;' }, [
-						E('button', {
-							'type': 'button',
-							'class': 'cbi-button cbi-button-save',
-							'click': () => view.submitHandle()
-						}, _('Save'))
 					])
 				])
+			]),
+
+			E('div', { 'class': 'cbi-section' }, [
+				E('h3', {}, _('App Selection')),
+				E('div', { 'class': 'cbi-value-description', 'style': 'margin-bottom: 15px;' }, _('If the App you want is not in the list, you can upgrade the feature library of the official website or customize the App.')),
+				E('div', { 'id': 'appContainer' })
+			]),
+
+			E('div', { 'class': 'cbi-page-actions' }, [
+				E('button', {
+					'type': 'button',
+					'class': 'cbi-button cbi-button-save',
+					'click': () => view.submitHandle()
+				}, _('Save'))
 			])
 		]);
 

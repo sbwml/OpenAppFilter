@@ -78,41 +78,43 @@ return L.view.extend({
 			E('h2', {}, _('App Feature')),
 			E('div', { 'class': 'cbi-map-descr' }, _('The feature library is used to describe App features, App filtering effect and number-dependent feature library.')),
 			
-			E('div', { 'class': 'cbi-section cbi-tblsection' }, [
-				E('div', { 'style': 'max-width: 1000px; padding: 10px;' }, [
+			E('div', { 'class': 'cbi-section' }, [
+				E('div', { 'class': 'cbi-section-node' }, [
 					
 					// current features
-					E('div', { 'class': 'cbi-value', 'style': 'margin-bottom: 15px;' }, [
-						E('label', { 'class': 'cbi-value-title', 'style': 'font-weight: bold; width: 150px;' }, _('Current version') + ':'),
-						E('div', { 'class': 'cbi-value-field', 'id': 'feature-version', 'style': 'padding: 0;' }, info.version)
+					E('div', { 'class': 'cbi-value' }, [
+						E('label', { 'class': 'cbi-value-title' }, _('Current version') + ':'),
+						E('div', { 'class': 'cbi-value-field', 'id': 'feature-version' }, info.version)
 					]),
-					E('div', { 'class': 'cbi-value', 'style': 'margin-bottom: 15px;' }, [
-						E('label', { 'class': 'cbi-value-title', 'style': 'font-weight: bold; width: 150px;' }, _('Feature format') + ':'),
-						E('div', { 'class': 'cbi-value-field', 'id': 'feature-format', 'style': 'padding: 0;' }, info.format)
+					E('div', { 'class': 'cbi-value' }, [
+						E('label', { 'class': 'cbi-value-title' }, _('Feature format') + ':'),
+						E('div', { 'class': 'cbi-value-field', 'id': 'feature-format' }, info.format)
 					]),
-					E('div', { 'class': 'cbi-value', 'style': 'margin-bottom: 15px;' }, [
-						E('label', { 'class': 'cbi-value-title', 'style': 'font-weight: bold; width: 150px;' }, _('App number') + ':'),
-						E('div', { 'class': 'cbi-value-field', 'id': 'feature-count', 'style': 'padding: 0;' }, info.rule_count)
+					E('div', { 'class': 'cbi-value' }, [
+						E('label', { 'class': 'cbi-value-title' }, _('App number') + ':'),
+						E('div', { 'class': 'cbi-value-field', 'id': 'feature-count' }, info.rule_count)
 					]),
-					E('div', { 'class': 'cbi-value', 'style': 'margin-bottom: 25px;' }, [
-						E('label', { 'class': 'cbi-value-title', 'style': 'font-weight: bold; width: 150px;' }, _('Feature download') + ':'),
-						E('div', { 'class': 'cbi-value-field', 'style': 'padding: 0;' }, [
+					E('div', { 'class': 'cbi-value' }, [
+						E('label', { 'class': 'cbi-value-title' }, _('Feature download') + ':'),
+						E('div', { 'class': 'cbi-value-field' }, [
 							E('a', { 'href': 'http://www.openappfilter.com', 'target': '_blank' }, 'www.openappfilter.com')
 						])
 					]),
 
 					// update features
-					E('div', { 'style': 'border-top: 1px solid #eee; padding-top: 20px; display: flex; align-items: center; gap: 15px; flex-wrap: wrap;' }, [
-						E('label', { 'for': 'ulfile', 'style': 'font-weight: bold;' }, _('Feature Library Update') + ': '),
-						fileInput,
-						E('button', {
-							'type': 'button',
-							'class': 'cbi-button cbi-button-action',
-							'click': () => view.handleUpload(fileInput)
-						}, _('Upload'))
-					]),
-
-					E('p', { 'class': 'desc', 'style': 'margin-top: 15px; color: gray;' }, _('Feature library files can be downloaded from the official website. After downloading, upload to upgrade. Note the feature code format version, which needs to be consistent with the current feature code format!'))
+					E('div', { 'class': 'cbi-value' }, [
+						E('label', { 'class': 'cbi-value-title', 'for': 'ulfile' }, _('Feature Library Update') + ':'),
+						E('div', { 'class': 'cbi-value-field' }, [
+							fileInput,
+							E('button', {
+								'type': 'button',
+								'class': 'cbi-button cbi-button-action',
+								'style': 'margin-left: 10px;',
+								'click': () => view.handleUpload(fileInput)
+							}, _('Upload')),
+							E('div', { 'class': 'cbi-value-description' }, _('Feature library files can be downloaded from the official website. After downloading, upload to upgrade. Note the feature code format version, which needs to be consistent with the current feature code format!'))
+						])
+					])
 				])
 			])
 		]);

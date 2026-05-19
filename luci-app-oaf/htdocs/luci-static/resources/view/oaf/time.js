@@ -39,29 +39,30 @@ return L.view.extend({
 			E('h2', {}, _('Time Configuration')),
 			E('div', { 'class': 'cbi-map-descr' }, _('Configure effective time rules for application filtering.')),
 
-			E('div', { 'class': 'cbi-section cbi-tblsection' }, [
-				E('div', { 'style': 'max-width: 1000px; padding: 10px;' }, [
+			E('div', { 'class': 'cbi-section' }, [
+				E('div', { 'class': 'cbi-section-node' }, [
 
-					E('div', { 'class': 'time-rules' }, [
-						E('h3', { 'style': 'margin-bottom: 15px;' }, _('Time Rules')),
-
-						// select time mode
-						E('div', { 'class': 'mode-selection', 'style': 'margin-bottom: 20px;' }, [
-							E('label', { 'for': 'timeMode', 'style': 'font-weight: bold; margin-right: 10px;' }, _('Mode Selection') + ':'),
+					// select time mode
+					E('div', { 'class': 'cbi-value' }, [
+						E('label', { 'class': 'cbi-value-title', 'for': 'timeMode' }, _('Mode Selection') + ':'),
+						E('div', { 'class': 'cbi-value-field' }, [
 							E('select', {
 								'id': 'timeMode',
+								'class': 'cbi-input-select',
 								'change': () => view.toggleModeContent()
 							}, [
 								E('option', { 'value': '0' }, _('Fixed Time')),
 								E('option', { 'value': '1' }, _('Dynamic Time'))
 							])
-						]),
+						])
+					]),
 
-						// static time mode
-						E('div', { 'id': 'staticTimeSection' }, [
-							E('div', { 'class': 'weekday-selector', 'style': 'margin-bottom: 20px;' }, [
-								E('label', { 'style': 'font-weight: bold;' }, _('Weekday Selection') + ': '),
-								...[
+					// static time mode
+					E('div', { 'id': 'staticTimeSection' }, [
+						E('div', { 'class': 'cbi-value' }, [
+							E('label', { 'class': 'cbi-value-title' }, _('Weekday Selection') + ':'),
+							E('div', { 'class': 'cbi-value-field' }, [
+								E('div', { 'style': 'display: flex; flex-wrap: wrap; gap: 15px;' }, [
 									{ val: '1', label: _('Mon') },
 									{ val: '2', label: _('Tue') },
 									{ val: '3', label: _('Wed') },
@@ -69,96 +70,101 @@ return L.view.extend({
 									{ val: '5', label: _('Fri') },
 									{ val: '6', label: _('Sat') },
 									{ val: '0', label: _('Sun') }
-								].map(item => E('div', { 'class': 'weekday-item' }, [
-									E('input', { 'type': 'checkbox', 'name': 'weekday_static', 'value': item.val }),
+								].map(item => E('label', { 'style': 'margin-right: 15px; display: inline-flex; align-items: center; gap: 4px;' }, [
+									E('input', { 'type': 'checkbox', 'name': 'weekday_static', 'value': item.val, 'class': 'cbi-input-checkbox' }),
 									' ' + item.label
-								]))
-							]),
-							E('table', { 'class': 'time-table', 'id': 'timeTable', 'style': 'width: 100%; border-collapse: collapse;' }, [
-								E('tr', { 'class': 'tr table-titles' }, [
-									E('th', { 'class': 'th', 'style': 'width: 40%;' }, _('Start Time')),
-									E('th', { 'class': 'th', 'style': 'width: 40%;' }, _('End Time')),
-									E('th', { 'class': 'th', 'style': 'width: 20%;' }, _('Actions'))
-								])
-							]),
-							E('div', { 'id': 'errorContainer', 'style': 'color: red; font-size: 12px; margin-top: 10px;' }),
-							E('div', { 'style': 'margin-top: 15px;' }, [
-								E('button', {
-									'type': 'button',
-									'class': 'cbi-button cbi-button-action',
-									'click': () => view.addTimeRow('00:00', '23:59')
-								}, _('Add Time Period'))
+								])))
 							])
 						]),
 
-						// dynamic time mode
-						E('div', { 'id': 'dynamicTimeSection', 'style': 'display: none;' }, [
-							E('p', { 'class': 'desc', 'style': 'margin-bottom: 20px;' }, _('Dynamic time mode refers to dynamically adjusting app filter switches, such as allowing children to play games for 20 minutes after studying for 1 hour, automatically enabling filtering after exceeding entertainment time, and repeating the cycle.')),
-							
-							E('div', { 'class': 'setting-item' }, [
-								E('label', {}, _('Enable Duration Each Time (Study Time)') + ': '),
-								E('input', { 'type': 'number', 'id': 'denyTime', 'min': '1', 'value': timeData.deny_time || '60' }),
-								E('span', {}, ' ' + _('minutes'))
-							]),
-							E('div', { 'class': 'setting-item', 'style': 'margin-bottom: 25px;' }, [
-								E('label', {}, _('Disable Duration Each Time (Break Time)') + ': '),
-								E('input', { 'type': 'number', 'id': 'allowTime', 'min': '1', 'value': timeData.allow_time || '10' }),
-								E('span', {}, ' ' + _('minutes'))
-							]),
-
-							// advance setting option
-							E('div', { 'class': 'advanced-settings' }, [
-								E('div', {
-									'class': 'advanced-toggle',
-									'click': (ev) => {
-										const content = ev.currentTarget.nextElementSibling;
-										content.classList.toggle('expanded');
-										const arrow = ev.currentTarget.querySelector('.arrow');
-										if (arrow) arrow.classList.toggle('expanded');
-									}
-								}, [
-									E('span', { 'class': 'arrow' }),
-									E('span', {}, ' ' + _('Advanced Settings'))
+						E('div', { 'class': 'cbi-value' }, [
+							E('label', { 'class': 'cbi-value-title' }, _('Time Periods') + ':'),
+							E('div', { 'class': 'cbi-value-field' }, [
+								E('table', { 'class': 'cbi-section-table', 'id': 'timeTable' }, [
+									E('tr', { 'class': 'tr table-titles' }, [
+										E('th', { 'class': 'th', 'style': 'width: 40%;' }, _('Start Time')),
+										E('th', { 'class': 'th', 'style': 'width: 40%;' }, _('End Time')),
+										E('th', { 'class': 'th', 'style': 'width: 20%;' }, _('Actions'))
+									])
 								]),
-								E('div', { 'class': 'advanced-content' }, [
-									E('div', { 'class': 'weekday-selector', 'style': 'margin-bottom: 15px;' }, [
-										E('label', { 'style': 'font-weight: bold;' }, _('Weekday Selection') + ': '),
-										...[
-											{ val: '1', label: _('Mon') },
-											{ val: '2', label: _('Tue') },
-											{ val: '3', label: _('Wed') },
-											{ val: '4', label: _('Thur') },
-											{ val: '5', label: _('Fri') },
-											{ val: '6', label: _('Sat') },
-											{ val: '0', label: _('Sun') }
-										].map(item => E('div', { 'class': 'weekday-item' }, [
-											E('input', { 'type': 'checkbox', 'name': 'weekday_dynamic', 'value': item.val }),
-											' ' + item.label
-										]))
-									]),
-									E('div', { 'id': 'dynamicWeekdayErrorContainer', 'style': 'color: red; font-size: 12px; margin-top: 5px; display: none;' }),
-									
-									E('div', { 'class': 'setting-item' }, [
-										E('label', {}, _('Daily Study Time Range') + ': '),
-										E('input', { 'type': 'time', 'id': 'startTime', 'value': timeData.start_time || '08:00', 'style': 'margin-right: 5px;' }),
-										E('span', {}, '-'),
-										E('input', { 'type': 'time', 'id': 'endTime', 'value': timeData.end_time || '20:00', 'style': 'margin-left: 5px;' })
-									]),
-									E('p', { 'class': 'desc', 'style': 'color: #666;' }, _('This time range represents the daily school time period, which is a continuous time period. During this time period, filtering rules are dynamically enabled and disabled. Outside the time range, filtering is disabled by default.'))
+								E('div', { 'id': 'errorContainer', 'style': 'color: red; font-size: 12px; margin-top: 10px;' }),
+								E('div', { 'style': 'margin-top: 15px;' }, [
+									E('button', {
+										'type': 'button',
+										'class': 'cbi-button cbi-button-action',
+										'click': () => view.addTimeRow('00:00', '23:59')
+									}, _('Add Time Period'))
 								])
-							]),
-							E('div', { 'id': 'dynamicErrorContainer', 'style': 'color: red; font-size: 12px; margin-top: 10px;' })
+							])
 						])
 					]),
 
-					E('div', { 'class': 'button-container', 'style': 'margin-top: 20px;' }, [
-						E('button', {
-							'type': 'button',
-							'class': 'cbi-button cbi-button-save',
-							'click': () => view.submitHandle()
-						}, _('Save'))
+					// dynamic time mode
+					E('div', { 'id': 'dynamicTimeSection', 'style': 'display: none;' }, [
+						E('div', { 'class': 'cbi-value' }, [
+							E('label', { 'class': 'cbi-value-title' }, _('Dynamic Time Rules') + ':'),
+							E('div', { 'class': 'cbi-value-field' }, [
+								E('div', { 'class': 'cbi-value-description', 'style': 'margin-bottom: 15px;' }, _('Dynamic time mode refers to dynamically adjusting app filter switches, such as allowing children to play games for 20 minutes after studying for 1 hour, automatically enabling filtering after exceeding entertainment time, and repeating the cycle.'))
+							])
+						]),
+						
+						E('div', { 'class': 'cbi-value' }, [
+							E('label', { 'class': 'cbi-value-title', 'for': 'denyTime' }, _('Enable Duration Each Time (Study Time)') + ':'),
+							E('div', { 'class': 'cbi-value-field' }, [
+								E('input', { 'type': 'number', 'id': 'denyTime', 'min': '1', 'class': 'cbi-input-text', 'value': timeData.deny_time || '60', 'style': 'width: 100px;' }),
+								E('span', {}, ' ' + _('minutes'))
+							])
+						]),
+
+						E('div', { 'class': 'cbi-value' }, [
+							E('label', { 'class': 'cbi-value-title', 'for': 'allowTime' }, _('Disable Duration Each Time (Break Time)') + ':'),
+							E('div', { 'class': 'cbi-value-field' }, [
+								E('input', { 'type': 'number', 'id': 'allowTime', 'min': '1', 'class': 'cbi-input-text', 'value': timeData.allow_time || '10', 'style': 'width: 100px;' }),
+								E('span', {}, ' ' + _('minutes'))
+							])
+						]),
+
+						// advanced settings (weekday and time range directly visible in dynamic mode)
+						E('div', { 'class': 'cbi-value' }, [
+							E('label', { 'class': 'cbi-value-title' }, _('Weekday Selection') + ':'),
+							E('div', { 'class': 'cbi-value-field' }, [
+								E('div', { 'style': 'display: flex; flex-wrap: wrap; gap: 15px;' }, [
+									{ val: '1', label: _('Mon') },
+									{ val: '2', label: _('Tue') },
+									{ val: '3', label: _('Wed') },
+									{ val: '4', label: _('Thur') },
+									{ val: '5', label: _('Fri') },
+									{ val: '6', label: _('Sat') },
+									{ val: '0', label: _('Sun') }
+								].map(item => E('label', { 'style': 'margin-right: 15px; display: inline-flex; align-items: center; gap: 4px;' }, [
+									E('input', { 'type': 'checkbox', 'name': 'weekday_dynamic', 'value': item.val, 'class': 'cbi-input-checkbox' }),
+									' ' + item.label
+								]))),
+								E('div', { 'id': 'dynamicWeekdayErrorContainer', 'style': 'color: red; font-size: 12px; margin-top: 5px; display: none;' })
+							])
+						]),
+
+						E('div', { 'class': 'cbi-value' }, [
+							E('label', { 'class': 'cbi-value-title' }, _('Daily Study Time Range') + ':'),
+							E('div', { 'class': 'cbi-value-field' }, [
+								E('input', { 'type': 'time', 'id': 'startTime', 'class': 'cbi-input-text', 'value': timeData.start_time || '08:00', 'style': 'width: auto; display: inline-block;' }),
+								E('span', { 'style': 'margin: 0 10px;' }, '-'),
+								E('input', { 'type': 'time', 'id': 'endTime', 'class': 'cbi-input-text', 'value': timeData.end_time || '20:00', 'style': 'width: auto; display: inline-block;' }),
+								E('div', { 'class': 'cbi-value-description', 'style': 'margin-top: 5px;' }, _('This time range represents the daily school time period, which is a continuous time period. During this time period, filtering rules are dynamically enabled and disabled. Outside the time range, filtering is disabled by default.'))
+							])
+						]),
+
+						E('div', { 'id': 'dynamicErrorContainer', 'style': 'color: red; font-size: 12px; margin-top: 10px;' })
 					])
 				])
+			]),
+
+			E('div', { 'class': 'cbi-page-actions' }, [
+				E('button', {
+					'type': 'button',
+					'class': 'cbi-button cbi-button-save',
+					'click': () => view.submitHandle()
+				}, _('Save'))
 			])
 		]);
 
@@ -223,10 +229,9 @@ return L.view.extend({
 		cellStart.className = 'td';
 		const inputStart = E('input', {
 			'type': 'time',
-			'class': 'start-time',
+			'class': 'start-time cbi-input-text',
 			'value': start,
-			'required': true,
-			'style': 'width: 100%; border: 1px solid #ccc; padding: 4px; border-radius: 4px;'
+			'required': true
 		});
 		dom.append(cellStart, inputStart);
 
@@ -234,10 +239,9 @@ return L.view.extend({
 		cellEnd.className = 'td';
 		const inputEnd = E('input', {
 			'type': 'time',
-			'class': 'end-time',
+			'class': 'end-time cbi-input-text',
 			'value': end,
-			'required': true,
-			'style': 'width: 100%; border: 1px solid #ccc; padding: 4px; border-radius: 4px;'
+			'required': true
 		});
 		dom.append(cellEnd, inputEnd);
 

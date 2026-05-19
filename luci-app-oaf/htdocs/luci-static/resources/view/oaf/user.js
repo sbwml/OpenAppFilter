@@ -90,35 +90,40 @@ return L.view.extend({
 			E('h2', {}, _('User Configuration')),
 			E('div', { 'class': 'cbi-map-descr' }, _('Configure application filtering user modes, managed terminals, and whitelists.')),
 			
-			E('div', { 'class': 'cbi-section cbi-tblsection' }, [
-				E('div', { 'style': 'max-width: 1000px; padding: 10px;' }, [
+			E('div', { 'class': 'cbi-section' }, [
+				E('div', { 'class': 'cbi-section-node' }, [
 					
-					E('div', { 'class': 'mode-selection' }, [
-						E('label', {}, [
-							E('input', {
-								'type': 'radio',
-								'name': 'mode',
-								'value': '0',
-								'click': () => view.switchMode(0)
-							}),
-							E('span', {}, ' ' + _('Automatic Mode'))
-						]),
-						E('label', { 'style': 'margin-left: 20px;' }, [
-							E('input', {
-								'type': 'radio',
-								'name': 'mode',
-								'value': '1',
-								'click': () => view.switchMode(1)
-							}),
-							E('span', {}, ' ' + _('Manual Mode'))
+					E('div', { 'class': 'cbi-value' }, [
+						E('label', { 'class': 'cbi-value-title' }, _('Filter Mode') + ':'),
+						E('div', { 'class': 'cbi-value-field' }, [
+							E('label', { 'class': 'cbi-input-radio', 'style': 'margin-right: 20px; display: inline-flex; align-items: center; gap: 4px;' }, [
+								E('input', {
+									'type': 'radio',
+									'name': 'mode',
+									'value': '0',
+									'class': 'cbi-input-radio',
+									'click': () => view.switchMode(0)
+								}),
+								E('span', {}, ' ' + _('Automatic Mode'))
+							]),
+							E('label', { 'class': 'cbi-input-radio', 'style': 'display: inline-flex; align-items: center; gap: 4px;' }, [
+								E('input', {
+									'type': 'radio',
+									'name': 'mode',
+									'value': '1',
+									'class': 'cbi-input-radio',
+									'click': () => view.switchMode(1)
+								}),
+								E('span', {}, ' ' + _('Manual Mode'))
+							])
 						])
 					]),
 
-					E('div', { 'id': 'modeDescription', 'class': 'desc', 'style': 'margin-bottom: 20px; font-weight: 500;' }),
+					E('div', { 'id': 'modeDescription', 'class': 'cbi-value-description' }),
 
-					E('div', { 'id': 'manual_section', 'style': 'display: none; margin-bottom: 20px;' }, [
-						E('h3', { 'style': 'margin-bottom: 10px;' }, _('Controlled Terminals')),
-						E('table', { 'class': 'table cbi-section-table', 'id': 'user_table', 'style': 'width: 100%;' }, [
+					E('div', { 'id': 'manual_section', 'style': 'display: none; margin-top: 20px;' }, [
+						E('h3', {}, _('Controlled Terminals')),
+						E('table', { 'class': 'table cbi-section-table', 'id': 'user_table' }, [
 							E('tr', { 'class': 'tr table-titles' }, [
 								E('th', { 'class': 'th' }, _('MAC Address')),
 								E('th', { 'class': 'th' }, _('Hostname')),
@@ -128,9 +133,9 @@ return L.view.extend({
 						])
 					]),
 
-					E('div', { 'id': 'auto_user_section', 'style': 'display: none; margin-bottom: 20px;' }, [
-						E('h3', { 'style': 'margin-bottom: 10px;' }, _('Effective Users')),
-						E('table', { 'class': 'table cbi-section-table', 'id': 'auto_user_table', 'style': 'width: 100%;' }, [
+					E('div', { 'id': 'auto_user_section', 'style': 'display: none; margin-top: 20px;' }, [
+						E('h3', {}, _('Effective Users')),
+						E('table', { 'class': 'table cbi-section-table', 'id': 'auto_user_table' }, [
 							E('tr', { 'class': 'tr table-titles' }, [
 								E('th', { 'class': 'th' }, _('MAC Address')),
 								E('th', { 'class': 'th' }, _('Hostname')),
@@ -143,10 +148,10 @@ return L.view.extend({
 						])
 					]),
 
-					E('div', { 'id': 'whitelist_section', 'style': 'display: none; margin-bottom: 20px;' }, [
-						E('h3', { 'style': 'margin-bottom: 5px;' }, _('Whitelist Users')),
-						E('p', { 'class': 'desc', 'style': 'margin-bottom: 10px;' }, _('Terminals in the whitelist are not filtered.')),
-						E('table', { 'class': 'table cbi-section-table', 'id': 'whitelist_table', 'style': 'width: 100%;' }, [
+					E('div', { 'id': 'whitelist_section', 'style': 'display: none; margin-top: 20px;' }, [
+						E('h3', {}, _('Whitelist Users')),
+						E('div', { 'class': 'cbi-value-description', 'style': 'margin-bottom: 10px;' }, _('Terminals in the whitelist are not filtered.')),
+						E('table', { 'class': 'table cbi-section-table', 'id': 'whitelist_table' }, [
 							E('tr', { 'class': 'tr table-titles' }, [
 								E('th', { 'class': 'th' }, _('MAC Address')),
 								E('th', { 'class': 'th' }, _('Hostname')),
@@ -163,30 +168,6 @@ return L.view.extend({
 							'class': 'cbi-button cbi-button-add',
 							'click': () => view.showAddModal()
 						}, _('Add User'))
-					])
-				])
-			]),
-
-			E('div', { 'id': 'deviceSelectModal', 'class': 'oaf-modal', 'style': 'display: none;' }, [
-				E('div', { 'class': 'oaf-modal-content', 'style': 'width: 450px; height: 350px;' }, [
-					E('button', {
-						'type': 'button',
-						'class': 'oaf-modal-close',
-						'click': () => view.closeModal('deviceSelectModal')
-					}, '×'),
-					E('h4', { 'id': 'modalTitle', 'style': 'margin: 0 0 15px 0; color: #333; font-size: 18px;' }, _('Select Device')),
-					E('div', { 'id': 'deviceListContainer', 'style': 'flex: 1; overflow-y: auto; border: 1px solid #eee; padding: 10px; border-radius: 4px;' }),
-					E('div', { 'style': 'margin-top: 15px; display: flex; justify-content: flex-end; gap: 15px;' }, [
-						E('button', {
-							'type': 'button',
-							'class': 'cbi-button cbi-button-neutral',
-							'click': () => view.closeModal('deviceSelectModal')
-						}, _('Cancel')),
-						E('button', {
-							'type': 'button',
-							'class': 'cbi-button cbi-button-action',
-							'click': () => view.submitSelectedDevices()
-						}, _('OK'))
 					])
 				])
 			])
@@ -456,53 +437,64 @@ return L.view.extend({
 		const view = this;
 		const mode = view.userData.mode;
 
-		const modal = document.getElementById('deviceSelectModal');
-		const container = document.getElementById('deviceListContainer');
-		const title = document.getElementById('modalTitle');
-
-		title.textContent = mode === 1 ? _('Select Devices (Controlled)') : _('Select Devices (Whitelist)');
-		container.innerHTML = '';
-		modal.style.display = 'flex';
-
-		// ignore active devices
 		const activeList = mode === 1 ? view.userData.list : view.whitelistData.users;
 		const displayList = view.allUsers.filter(user => {
 			return !activeList.some(active => active.mac === user.mac);
 		});
 
+		const container = E('div', { 'class': 'cbi-map' }, []);
+
 		if (displayList.length === 0) {
-			container.innerHTML = `<div style="text-align: center; padding: 20px; color: #777;"><em>${_('No new devices available')}</em></div>`;
-			return;
+			dom.append(container, E('div', { 'style': 'text-align: center; padding: 20px; color: #777;' }, [
+				E('em', {}, _('No new devices available'))
+			]));
+		} else {
+			displayList.forEach(user => {
+				const displayName = user.nickname || user.hostname || '';
+				const row = E('div', { 'class': 'user-item', 'style': 'padding: 8px 0; border-bottom: 1px solid #f5f5f5;' }, [
+					E('label', { 'style': 'display: flex; align-items: center; width: 100%; cursor: pointer;' }, [
+						E('input', {
+							'type': 'checkbox',
+							'value': user.mac,
+							'style': 'margin-right: 10px;'
+						}),
+						E('div', {}, [
+							E('div', { 'style': 'font-weight: bold;' }, user.mac),
+							displayName ? E('div', { 'style': 'font-size: 11px; color: #666;' }, displayName) : ''
+						])
+					])
+				]);
+				dom.append(container, row);
+			});
 		}
 
-		displayList.forEach(user => {
-			const displayName = user.nickname || user.hostname || '';
-			const row = E('div', { 'class': 'user-item', 'style': 'padding: 8px 0; border-bottom: 1px solid #f5f5f5;' }, [
-				E('label', { 'style': 'display: flex; align-items: center; width: 100%; cursor: pointer;' }, [
-					E('input', {
-						'type': 'checkbox',
-						'value': user.mac,
-						'style': 'margin-right: 10px;'
-					}),
-					E('div', {}, [
-						E('div', { 'style': 'font-weight: bold;' }, user.mac),
-						displayName ? E('div', { 'style': 'font-size: 11px; color: #666;' }, displayName) : ''
-					])
-				])
-			]);
-			dom.append(container, row);
-		});
+		const modalTitle = mode === 1 ? _('Select Devices (Controlled)') : _('Select Devices (Whitelist)');
+
+		ui.showModal(modalTitle, [
+			E('div', { 'style': 'max-height: 250px; overflow-y: auto; margin-bottom: 15px;' }, container),
+			E('div', { 'class': 'right' }, [
+				E('button', {
+					'class': 'cbi-button cbi-button-neutral',
+					'click': () => ui.hideModal()
+				}, _('Cancel')),
+				' ',
+				E('button', {
+					'class': 'cbi-button cbi-button-action',
+					'click': () => view.submitSelectedDevices(container)
+				}, _('OK'))
+			])
+		]);
 	},
 
-	submitSelectedDevices() {
+	submitSelectedDevices(container) {
 		const view = this;
 		const mode = view.userData.mode;
 
-		const checkboxes = document.getElementById('deviceListContainer').querySelectorAll('input[type="checkbox"]:checked');
+		const checkboxes = container.querySelectorAll('input[type="checkbox"]:checked');
 		const selectedMacs = Array.from(checkboxes).map(cb => cb.value);
 
 		if (selectedMacs.length === 0) {
-			view.closeModal('deviceSelectModal');
+			ui.hideModal();
 			return;
 		}
 
@@ -535,20 +527,12 @@ return L.view.extend({
 				}
 			}
 			view.updateViewUI(document.body);
-			view.closeModal('deviceSelectModal');
 			ui.hideModal();
 			ui.addNotification(null, E('p', {}, _('Add successful.')), 'info');
 		}).catch((err) => {
 			ui.hideModal();
 			ui.addNotification(null, E('p', {}, _('Failed to add devices: ') + err.message), 'danger');
 		});
-	},
-
-	closeModal(modalId) {
-		const modal = document.getElementById(modalId);
-		if (modal) {
-			modal.style.display = 'none';
-		}
 	},
 
 	handleSave: null,
