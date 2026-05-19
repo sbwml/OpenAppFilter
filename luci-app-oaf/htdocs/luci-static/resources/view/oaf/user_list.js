@@ -223,11 +223,11 @@ return L.view.extend({
 
 		const tabList = E('ul', { 'class': 'cbi-tabmenu' }, [
 			E('li', {
-				'class': 'cbi-tab active',
+				'class': 'cbi-tab',
 				'click': (ev) => view.switchTab('tab2', ev.currentTarget)
 			}, E('a', { 'href': '#' }, _('App Statistics'))),
 			E('li', {
-				'class': 'cbi-tab',
+				'class': 'cbi-tab-disabled',
 				'click': (ev) => view.switchTab('tab3', ev.currentTarget)
 			}, E('a', { 'href': '#' }, _('Access Records')))
 		]);
@@ -365,10 +365,12 @@ return L.view.extend({
 		const modal = document.querySelector('.ui-modal') || document.body;
 		const tab2 = modal.querySelector('#tab2');
 		const tab3 = modal.querySelector('#tab3');
-		const tabItems = modal.querySelectorAll('.cbi-tab');
+		const tabItems = modal.querySelectorAll('.cbi-tab, .cbi-tab-disabled');
 
-		tabItems.forEach(item => item.classList.remove('active'));
-		tabItem.classList.add('active');
+		tabItems.forEach(item => {
+			item.className = 'cbi-tab-disabled';
+		});
+		tabItem.className = 'cbi-tab';
 
 		if (tabId === 'tab2') {
 			if (tab2) tab2.style.display = 'block';
