@@ -2,6 +2,7 @@
 'require rpc';
 'require ui';
 'require dom';
+'require network';
 
 const callGetAppFilterAdv = rpc.declare({
 	object: 'appfilter',
@@ -34,11 +35,13 @@ return L.view.extend({
 
 		return Promise.all([
 			callGetAppFilterAdv(),
-			callGetOafStatus()
+			callGetOafStatus(),
+			network.getDevices()
 		]).then((responses) => {
 			return {
 				adv: responses[0] ? (responses[0].data || {}) : {},
-				status: responses[1] ? (responses[1].data || {}) : {}
+				status: responses[1] ? (responses[1].data || {}) : {},
+				devices: responses[2] || []
 			};
 		});
 	},
@@ -47,6 +50,19 @@ return L.view.extend({
 		const view = this;
 		view.advData = data.adv;
 		view.statusData = data.status;
+
+		const currentVal = view.advData.lan_ifname || 'br-lan';
+		const devicesList = data.devices || [];
+		const excludeDevice = ['docker', 'dummy', 'radio', 'sit', 'teql', 'veth', 'ztly'];
+		const filteredDevices = devicesList.filter(dev => {
+			const name = dev.getName();
+			return name != null && !excludeDevice.some(prefix => name.startsWith(prefix));
+		});
+
+		const deviceNames = filteredDevices.map(d => d.getName());
+		if (currentVal && !deviceNames.includes(currentVal)) {
+			deviceNames.push(currentVal);
+		}
 
 		const container = E('div', { 'class': 'cbi-map' }, [
 			E('h2', {}, _('Advanced Settings')),
@@ -96,13 +112,16 @@ return L.view.extend({
 					// lan port
 					E('div', { 'class': 'cbi-value', 'style': 'margin-bottom: 10px; display: flex; align-items: center;' }, [
 						E('label', { 'for': 'lan_ifname', 'style': 'font-weight: bold; width: 220px; display: inline-block;' }, _('LAN Interface') + ':'),
-						E('input', {
-							'type': 'text',
+						E('select', {
 							'id': 'lan_ifname',
 							'name': 'lan_ifname',
-							'value': view.advData.lan_ifname || 'br-lan',
-							'style': 'padding: 5px; width: 200px; border: 1px solid #ccc; border-radius: 4px;'
-						})
+							'style': 'padding: 5px; width: 200px; border: 1px solid #ccc; border-radius: 4px; height: 34px;'
+						}, deviceNames.map(name => {
+							return E('option', {
+								'value': name,
+								'selected': (name === currentVal) ? 'selected' : null
+							}, name);
+						}))
 					]),
 					E('p', { 'class': 'desc', 'style': 'margin-bottom: 30px; color: gray;' }, _('The name of the LAN interface, used for detecting terminal information. The system default is bridge interface (br-lan). If the LAN port has been modified to a physical interface, please modify it to the corresponding name, such as eth0, support fuzzy matching. For example, you can setup lan to match br-lan and br-lan2.')),
 
