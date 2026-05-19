@@ -243,8 +243,8 @@ return L.view.extend({
 				E('table', { 'class': 'table cbi-section-table', 'id': 'visit_list_table' }, [
 					E('tr', { 'class': 'tr table-titles' }, [
 						E('th', { 'class': 'th' }, _('App Name')),
-						E('th', { 'class': 'th' }, _('Start Time')),
-						E('th', { 'class': 'th' }, _('Last Time')),
+						E('th', { 'class': 'th' }, _('Start Access Time')),
+						E('th', { 'class': 'th' }, _('Last Access Time')),
 						E('th', { 'class': 'th' }, _('Duration')),
 						E('th', { 'class': 'th' }, _('Filter Status'))
 					]),
