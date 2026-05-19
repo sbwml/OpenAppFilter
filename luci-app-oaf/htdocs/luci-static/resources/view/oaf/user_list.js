@@ -471,7 +471,7 @@ return L.view.extend({
 			view.echartsInstance.dispose();
 		}
 
-		view.echartsInstance = echarts.init(chartElement);
+		view.echartsInstance = echarts.init(chartElement, null, { renderer: 'svg' });
 		if (!data || data.length === 0) {
 			view.echartsInstance.setOption({
 				title: {
