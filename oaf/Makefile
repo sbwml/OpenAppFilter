@@ -14,14 +14,13 @@ define KernelPackage/oaf
   SECTION:=TT Apps
   CATEGORY:=TT Apps
   TITLE:=OAF kernel DPI driver
-  FILES:=$(PKG_BUILD_DIR)/oaf.ko 
-  DEPENDS:=+kmod-ipt-conntrack
-  KCONFIG:=
+  FILES:=$(PKG_BUILD_DIR)/oaf.ko
+  DEPENDS:=+kmod-nf-conntrack +kmod-nf-reject
   # AUTOLOAD:=$(call AutoLoad,0,$(PKG_AUTOLOAD))
 endef
 
 define KernelPackage/oaf/description
-  open appfilter kernel module 
+  open appfilter kernel module
 endef
 
 EXTRA_CFLAGS:=-Wno-unused-variable -Wno-unused-function -Wno-missing-prototypes \
@@ -40,4 +39,3 @@ define Build/Compile
 endef
 
 $(eval $(call KernelPackage,oaf))
-
