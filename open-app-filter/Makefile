@@ -3,12 +3,11 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=appfilter
 PKG_VERSION:=6.1.6
-PKG_RELEASE:=2
+PKG_RELEASE:=3
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)
 include $(INCLUDE_DIR)/package.mk
 
-TARGET_CFLAGS +=-Werror=implicit-function-declaration
 define Package/appfilter
   SECTION:=TT Apps
   CATEGORY:=TT Apps
